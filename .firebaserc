@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "firstproject-87ae2": {
+      "hosting": {
+        "Angular-Firebase": [
+          "firstproject-87ae2"
+        ]
+      }
+    }
+  }
+}

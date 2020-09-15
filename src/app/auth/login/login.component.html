@@ -1,0 +1,52 @@
+<!-- Start Company Logo -->
+<div class="row justify-content-center mt-3"  >
+  <div class="col-md-2">
+    <img src="https://firebasestorage.googleapis.com/v0/b/rolctex.appspot.com/o/Products%2Flogo.jpg?alt=media&token=03376971-7687-49fc-8db5-08e206ca1b4d" class="img-fluid" alt="Responsive image">
+  </div>
+</div>
+<!-- End Company Logo-->
+
+<!--Main Login Layout-->
+<main class="text-center  mt-1">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <mdb-card class="mt-5" style="width: 60%;position: relative; left: 20%;">
+          <mdb-card-header  class="unique-color-dark white-text text-center py-4">
+            <h4>
+              <strong>Modulo de administración
+              </strong>
+            </h4>
+          </mdb-card-header>
+          <!--Card content-->
+          <mdb-card-body class="px-lg-5">
+            <!--Login Form -->
+            <form #loginForm="ngForm" (ngSubmit)="login(loginForm) " class="text-center" style="color: #757575;">
+              <!-- Auth Error Message-->
+              <div class="row" *ngIf="authError">
+                <div class="col-12 alert alert-danger">{{ authError?.message }}
+                </div>
+              </div>
+              <!-- Login Email Input-->
+              <div class="md-form mt-3">
+                <label for="email">Correo Electronico
+                </label>
+                <input ngModel #email="ngModel" name="email" type="email" id="email" class="form-control" mdbInput>
+              </div>
+              <!-- Login Password Input-->
+              <div class="md-form">
+                <label for="password">Contraseña
+                </label>
+                <input ngModel #password="ngModel" name="password" type="password" class="form-control" mdbInput id="password">
+              </div>
+              <!-- Login Submit Button-->
+              <button mdbBtn color="elegant" outline="true" rounded="true" block="true" class="z-depth-0 my-4 waves-effect"
+                mdbWavesEffect type="submit">Iniciar session
+              </button>
+            </form>
+          </mdb-card-body>
+        </mdb-card>
+      </div>  <!--  End Col-12-->
+    </div>  <!--  End Row-->
+ </div> <!--  End Container-->
+</main> <!--End Login Layout-->

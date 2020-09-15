@@ -1,0 +1,290 @@
+<!-- Start Navbar-->
+<mdb-navbar SideClass="navbar navbar-expand-lg unique-color-dark" [containerInside]="false">
+  <!--Start Navbar brand -->
+  <mdb-navbar-brand>
+    <a class="navbar-brand white-text ml-4">Modulo de administración
+    </a>
+  </mdb-navbar-brand>
+  <!--End Navbar brand -->
+
+<!--  Logoff link-->
+  <links>
+    <ul class="navbar-nav ml-auto">
+      <!-- Dropdown -->
+      <li class="nav-item dropdown" dropdown>
+        <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light white-text"
+           mdbWavesEffect>
+          <mdb-icon fas icon="cog">
+          </mdb-icon>
+          Session
+          <span class="caret">
+          </span>
+        </a>
+        <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
+          <a class="dropdown-item waves-light" mdbWavesEffect (click)="logout()">Cerrar session</a>
+        </div>
+      </li>
+    </ul>
+  </links>
+<!--  End LogOff link-->
+</mdb-navbar>
+<!-- End Navbar-->
+
+
+<!--Main Container -->
+<div class="row">
+  <!--    Main Cards-->
+  <div class="col-lg-9 col-sm-12">
+    <div class="row">
+      <div class="col-lg-4 mt-3 col-md-6 col-sm-12 " *ngFor="let item of products">
+        <!--Start Cards -->
+        <mdb-card *ngIf="!item.isedit; else elseBlock">  <!-- If trigger when edit button is clicked -->
+          <!-- If trigger when Product is IMG -->
+          <div class="view rgba-white-slight waves-light" mdbWavesEffect *ngIf="(item.fileExt === 'jpg' || item.fileExt === 'png'); else vidBlock">
+            <mdb-card-img src="{{item.imgLink}}"></mdb-card-img>
+          </div>
+          <!-- Else trigger when Product is VID -->
+          <ng-template #vidBlock>
+            <video class="video-fluid z-depth-1" muted loop controls>
+              <source src="{{item.imgLink}}" type="video/mp4"/>
+            </video>
+          </ng-template>
+          <!--Card content-->
+          <mdb-card-body>
+            <!--Title-->
+            <mdb-card-title>
+              <h4>{{item.product}}</h4>
+            </mdb-card-title>
+            <hr>
+            <!-- Product text-->
+            <mdb-card-text>
+              <!-- Start Product Description-->
+              <div>
+                <label><strong>Descripción</strong></label>
+                <br>
+                {{item.description}}
+              </div>
+              <!-- End Product Description-->
+              <br>
+              <!-- Start Product Attributes-->
+              <label>
+                <strong>Atributos
+                </strong>
+              </label>
+              <br>
+              <div *ngFor="let attrib of item.attributes"> <!-- For to cycle through attrib array-->
+                {{attrib}}
+              </div>
+              <!-- End Product Attributes-->
+              <!-- Start New/Used -->
+              <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Estado del producto
+              </label>
+              <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref" disabled>
+                <option selected>{{item.estado}}
+                </option>
+              </select>
+              <!-- End New/Used -->
+
+              <!-- Start Visible -->
+              <div class="custom-control custom-switch mb-2" *ngIf="item.visible; else NotVisible"> <!-- If to check visible status-->
+                <input item.visible type="checkbox" class="custom-control-input" id="customSwitch1" name="visible" checked disabled>
+                <label class="custom-control-label" for="customSwitch1">Visible</label>
+              </div>
+              <!-- Else Visible -->
+              <ng-template #NotVisible>
+                <div class="custom-control custom-switch mb-2">
+                  <input item.visible type="checkbox" class="custom-control-input" id="customSwitch1" name="visible"
+                         disabled>
+                  <label class="custom-control-label" for="customSwitch1">Visible</label>
+                </div>
+              </ng-template>
+              <!-- End Visible -->
+              <!-- Start Buttons -->
+              <span>
+                  <!-- Edit Button -->
+                  <a mdbBtn color="elegant" outline="true" rounded="true" block="true"
+                     class="z-depth-0 m-2 p-2 waves-effect"
+                     mdbWavesEffect (click)="EditRecord(item)">Editar Producto
+                  </a>
+                <!-- Delete Button -->
+                  <a mdbBtn color="danger" outline="true" rounded="true" block="true"
+                     class="z-depth-0 p-2 m-2 waves-effect"
+                     mdbWavesEffect (click)="DeleteProduct(item)">Eliminar Producto
+                  </a>
+              </span>
+            </mdb-card-text> <!-- End Product text-->
+          </mdb-card-body>
+        </mdb-card>
+        <!-- Card -->
+
+
+
+        <!-- Else Block Edit Button Clicked -->
+
+
+
+        <ng-template #elseBlock>
+          <mdb-card>
+            <!-- Card img -->
+            <div *ngIf="(item.fileExt === 'jpg' || item.fileExt === 'png'); else vidBlock" > <!-- If trigger when Product is IMG -->
+              <mdb-card-img src="{{item.imgLink}}" alt="Card image cap">
+              </mdb-card-img>
+            </div>
+            <!-- Else trigger when Product is VID -->
+            <ng-template #vidBlock>
+              <video class="video-fluid z-depth-1" muted loop controls>
+                <source src="{{item.imgLink}}" type="video/mp4" />
+              </video>
+            </ng-template>
+            <!--Card content-->
+            <mdb-card-body>
+              <!-- Product Name Field -->
+              <mdb-card-title>
+                <label for="nombre">Nombre</label>
+                <input type="text" [(ngModel)]="item.editname" class="form-control" id="nombre">
+              </mdb-card-title>
+              <!-- Product Description Field -->
+              <mdb-card-text>
+                <label for="descripcion"><strong>Descripción</strong></label>
+                <input type="text" [(ngModel)]="item.editdescription" id="descripcion" class="form-control">
+              </mdb-card-text>
+              <!-- Product Attributes Field -->
+              <div class="md-form">
+                <textarea [(ngModel)]="item.editattributes" type="text" id="form8" class="md-textarea md-textarea-auto form-control" name="attributes" mdbInput>
+                </textarea>
+                  <label for="form8">
+                    <strong>Características
+                    </strong>
+                  </label>
+              </div>
+              <!-- Product Used/New Field -->
+              <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Estado del producto</label>
+                <select [(ngModel)]="item.editestado" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+                  <option value="Nuevo">Nuevo</option>
+                  <option value="Usado"> Usado</option>
+                </select>
+              <!-- Product File Field -->
+              <label class="mt-3">Archivo
+              </label>
+              <div class="form-group">
+                <div class="custom-file">
+                  <label class="custom-file-label mt-1" for="editFile">Seleciona el archivo
+                  </label>
+                  <input type="file" class="custom-file-input" id="editFile" name="editFile" accept=".png, .jpg, .mp4" (change)="editOnUpload($event)">
+                </div>
+              </div>
+              <!-- File Progress bar upload -->
+              <div class="progress">
+                <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width]="(editUploadPercent | async) + '%'">
+                </div>
+              </div>
+              <input #imageProduct type="hidden" [value]="editUrlImage | async">
+              <!-- Product Visible Field -->
+              <div class="custom-control custom-switch my-3 ">
+                <input [(ngModel)]="item.editvisible" type="checkbox" class="custom-control-input" id="customSwitch" name="visible" checked>
+                <label class="custom-control-label" for="customSwitch">Visible</label>
+              </div>
+              <!-- Product Update/Cancel buttons -->
+              <span>
+                <a mdbBtn color="elegant" outline="true" rounded="true" block="true"
+                   class="z-depth-0 p-2 m-2 waves-effect"
+                   mdbWavesEffect (click)="item.isedit = false">Cancelar
+                </a>
+                <a mdbBtn color="danger" outline="true" rounded="true" block="true"
+                   class="z-depth-0 p-2 m-2 waves-effect" mdbWavesEffect (click)="Updatarecord(item)">Actualizar producto
+                </a>
+              </span>
+            </mdb-card-body>
+          </mdb-card>
+        </ng-template>
+      </div> <!-- Ends For Cards -->
+    </div> <!--    End Inner Row-->
+  </div><!--    End Col-->
+
+
+  <!-- Add Product Module -->
+
+  <div class="col-lg-3 col-sm-12 mt-3">
+    <mdb-card>
+      <!-- Title Field -->
+      <mdb-card-header class="unique-color-dark white-text text-center py-4">
+        <h5>
+          <strong>Agregar Producto</strong>
+        </h5>
+      </mdb-card-header>
+      <!--Card content-->
+      <mdb-card-body class="px-lg-5 pt-0">
+        <!-- Start Form -->
+        <form #userRegForm="ngForm" class="text-center" style="color: #757575;">
+          <!-- Product Name Field -->
+          <div class="md-form mt-3">
+            <input [(ngModel)]="product" class="form-control" id="product" mdbInput name="product" ngModel type="text">
+            <label for="product"> Nombre
+            </label>
+          </div>
+          <!-- Product Description Field -->
+          <div class="md-form mt-3">
+            <label for="description">Descripción</label>
+            <input [(ngModel)]="description" class="form-control" id="description" mdbInput name="description" ngModel type="text">
+          </div>
+          <!-- Product Attributes Field -->
+          <div class="md-form">
+            <textarea [(ngModel)]="attributes" type="text" id="form7" class="md-textarea md-textarea-auto form-control " name="attributes" mdbInput>
+            </textarea>
+            <label for="form7">Características
+            </label>
+          </div>
+          <!-- Product New/Used Field -->
+          <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Estado del producto
+          </label>
+          <select [(ngModel)]="estado" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref" name="estado">
+            <option selected value="Nuevo">Nuevo
+            </option>
+            <option value="Usado">Usado
+            </option>
+          </select>
+          <!-- Product File Upload Field -->
+          <label class="mt-3">Archivo
+          </label>
+          <div class="form-group">
+            <div class="custom-file">
+              <label class="custom-file-label" for="file">Seleciona el archivo
+              </label>
+              <input type="file" class="custom-file-input" id="file" name="file" accept=".png, .jpg, .mp4" (change)="onUpload($event)">
+            </div>
+          </div>
+          <!--File Upload Progress Bar -->
+          <div class="progress" *ngIf="show; else afterUpload"> <!-- If Switching to Blank after uplaad -->
+            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width]="(uploadPercent | async) + '%'">
+            </div>
+          </div>
+          <!-- Blank File Upload Progress Bar -->
+          <ng-template #afterUpload>
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped bg-success" role="progressbar">
+              </div>
+            </div>
+          </ng-template>
+          <br>
+          <input #imageProduct type="hidden" [value]="urlImage | async">
+          <!--Product Visible Field -->
+          <div class="custom-control custom-switch mb-4">
+            <input [(ngModel)]="visible" type="checkbox" class="custom-control-input" id="customSwitch3" name="visible" checked>
+            <label class="custom-control-label" for="customSwitch3">Visible</label>
+          </div>
+          <!-- Submit Button if fields are blank -->
+          <button *ngIf="urlImage | async; else btnDisabled" mdbBtn color="elegant" class="z-depth-0 my-4 waves-effect" mdbWavesEffect outline="true" rounded="true" [disabled]="!product || !description || !attributes || !estado" type="submit" (click)="CreateRecord()">Agregar Producto
+          </button>
+          <ng-template #btnDisabled>
+            <button mdbBtn color="elegant" class="z-depth-0 my-4 waves-effect" mdbWavesEffect outline="true" rounded="true" disabled=true type="submit" (click)="CreateRecord()">Agregar Producto
+            </button>
+          </ng-template>
+        </form> <!-- End Form -->
+      </mdb-card-body>
+    </mdb-card>
+  </div>  <!-- End Column-->
+</div> <!-- End row -->
+
+
+
+
